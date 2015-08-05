@@ -69,31 +69,6 @@ class Get extends RestAbstract
     }
 
     /**
-     * @param $query
-     * @param $start
-     * @param $rows
-     * @param $sort
-     * @param $facet
-     * @return array
-     */
-    private function getBaseSearch($query, $start, $rows, $sort, $facet)
-    {
-        $search = array(
-            'start'     => $start,
-            'rows'      => $rows,
-            'sort'      => $sort,
-            'facet'     => array($facet, $facet),
-            'cb.urlver' => 1
-        );
-
-        if ($query !== '') {
-            $search['q'] = $query;
-        }
-
-        return $search;
-    }
-
-    /**
      * Get the detailed metadata for a process. Requires the 'id' field from a process search result,
      * as well as a segment, also found from a process search result.
      * The results will be limited to children_count children metadata structures.
@@ -190,6 +165,32 @@ class Get extends RestAbstract
         foreach ($query_params as $key => $param) {
             $action .= $key . '=' . $param . '&';
         }
+
         return $this->request->getRequest($action);
+    }
+
+    /**
+     * Get sensor installer package for a specified sensor group
+     * Arguments:
+     *     group_id - the group_id to download an installer for; defaults to 1 "Default Group"
+     *     type - the sensor installer type. [WindowsEXE|WindowsMSI|OSX|Linux]
+     *
+     * @param $type
+     * @param int $group_id
+     * @return mixed
+     * @throws \InvalidArgumentException
+     */
+    public function sensorInstaller($type, $group_id=1)
+    {
+        $mapping = $this->getSensorMapping($group_id);
+
+        if (!array_key_exists($type, $mapping)) {
+            throw new \InvalidArgumentException(
+                sprintf('Invalid type, should be one of "WindowsEXE", "WindowsMSI", "OSX", or "Linux", given %s',
+                    $type)
+            );
+        }
+
+        return $this->request->getRequest($mapping[$type]);
     }
 }
