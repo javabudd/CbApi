@@ -1,0 +1,15 @@
+{
+  "authors": [
+    {
+      "name": "Andy O'Brien",
+      "email": "andy@1bg.com",
+      "homepage": "http://lowend.fm",
+      "role": "Developer"
+    }
+  ],
+  "autoload": {
+    "psr-0": {
+      "CBApi": "src/"
+    }
+  }
+}
