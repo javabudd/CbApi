@@ -6,7 +6,7 @@ namespace CBApi\Connection;
  * Class Request
  * @package CBApi\Connection
  */
-class Request
+final class Request
 {
     /** @var string */
     protected $url;
@@ -14,19 +14,14 @@ class Request
     /** @var string */
     protected $api_key;
 
-    /** @var bool */
-    protected $ssl;
-
     /**
      * @param $url
      * @param $api_key
-     * @param bool|false $ssl
      */
-    public function __construct($url, $api_key, $ssl = false)
+    public function __construct($url, $api_key)
     {
         $this->url     = $url;
         $this->api_key = $api_key;
-        $this->ssl     = $ssl;
     }
 
     /**
@@ -35,12 +30,10 @@ class Request
      */
     public function getRequest($action)
     {
-        $channel  = $this->createChannel($action);
+        $channel = $this->getChannel($action);
         $this->setBaseOptions($channel);
-        $response = curl_exec($channel);
-        curl_close($channel);
 
-        return $response;
+        return $this->curlExec($channel);
     }
 
     /**
@@ -50,21 +43,31 @@ class Request
      */
     public function postRequest($action, array $data)
     {
-        $channel = $this->createChannel($action);
+        $channel = $this->getChannel($action);
         $this->setBaseOptions($channel)->setPostOptions($channel, json_encode($data));
-        $response = curl_exec($channel);
-        curl_close($channel);
 
-        return $response;
+        return $this->curlExec($channel);
     }
 
     /**
      * @param $action
      * @return resource
      */
-    private function createChannel($action)
+    private function getChannel($action)
     {
         return curl_init($this->url . $action);
+    }
+
+    /**
+     * @param $channel
+     * @return mixed
+     */
+    private function curlExec($channel)
+    {
+        $response = curl_exec($channel);
+        curl_close($channel);
+
+        return $response;
     }
 
     /**
