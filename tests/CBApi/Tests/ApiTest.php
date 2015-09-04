@@ -28,7 +28,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         'url'         => 'http://localhosterino',
         'ssl_url'     => 'https://localhosterino',
         'api_key'     => '12345-12345-12354-12345',
-        'api_key_int' => 12345-12345-12345-12345,
+        'api_key_int' => 12345123451234512345,
         'license'     => '1234512345123456'
     ];
 
