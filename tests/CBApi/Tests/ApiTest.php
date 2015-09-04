@@ -3,8 +3,9 @@
 namespace CBApi\Tests;
 
 use CBApi\Connection\Request;
-use CBApi\Rest\Get;
-use CBApi\Rest\Put;
+use CBApi\Rest\GetRest;
+use CBApi\Rest\PutRest;
+use CBApi\Exception\ConnectionErrorException;
 
 /**
  * Class ApiTest
@@ -13,11 +14,11 @@ use CBApi\Rest\Put;
  */
 class ApiTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var \CBApi\Rest\Get */
-    private $get;
+    /** @var \CBApi\Rest\GetRest */
+    private $getRest;
 
-    /** @var \CBApi\Rest\Put */
-    private $put;
+    /** @var \CBApi\Rest\PutRest */
+    private $putRest;
 
     /** @var \CBApi\Connection\Request */
     private $request;
@@ -80,6 +81,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testBadGetConnection()
     {
+        self::setExpectedException(ConnectionErrorException::class);
         self::assertEquals(false, $this->getGetObj()->info());
     }
 
@@ -88,31 +90,32 @@ class ApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testBadPutConnection()
     {
+        self::setExpectedException(ConnectionErrorException::class);
         self::assertEquals(false, $this->getPutObj()->license(self::$generalData['license']));
     }
 
     /**
-     * @return \CBApi\Rest\Get
+     * @return \CBApi\Rest\GetRest
      */
     private function getGetObj()
     {
-        if (!$this->get) {
-            $this->get = new Get($this->request);
+        if (!$this->getRest) {
+            $this->getRest = new GetRest($this->request);
         }
 
-        return $this->get;
+        return $this->getRest;
     }
 
     /**
-     * @return \CBApi\Rest\Put
+     * @return \CBApi\Rest\PutRest
      */
     private function getPutObj()
     {
-        if (!$this->put) {
-            $this->put = new Put($this->request);
+        if (!$this->putRest) {
+            $this->putRest = new PutRest($this->request);
         }
 
-        return $this->put;
+        return $this->putRest;
     }
 
     /**

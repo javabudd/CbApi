@@ -52,11 +52,6 @@ abstract class RestAbstract
      */
     protected function getSensorMapping($group_id)
     {
-        return array(
-            'WindowsEXE' => sprintf('/api/v1/group/%d/installer/windows/exe', $group_id),
-            'WindowsMSI' => sprintf('/api/v1/group/%d/installer/windows/msi', $group_id),
-            'OSX'        => sprintf('/api/v1/group/%d/installer/osx', $group_id),
-            'Linux'      => sprintf('/api/v1/group/%d/installer/linux', $group_id)
-        );
+        return Sensors::getSensorMapping($group_id);
     }
 }

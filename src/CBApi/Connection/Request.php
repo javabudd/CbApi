@@ -2,11 +2,13 @@
 
 namespace CBApi\Connection;
 
+use CBApi\Exception\ConnectionErrorException;
+
 /**
  * Class Request
  * @package CBApi\Connection
  */
-final class Request
+class Request
 {
     /** @var string */
     protected $url;
@@ -27,6 +29,7 @@ final class Request
     /**
      * @param $action
      * @return mixed
+     * @throws ConnectionErrorException
      */
     public function getRequest($action)
     {
@@ -40,6 +43,7 @@ final class Request
      * @param $action
      * @param array $data
      * @return mixed
+     * @throws ConnectionErrorException
      */
     public function postRequest($action, array $data)
     {
@@ -61,10 +65,14 @@ final class Request
     /**
      * @param $channel
      * @return mixed
+     * @throws ConnectionErrorException
      */
     private function curlExec($channel)
     {
         $response = curl_exec($channel);
+        if (!$response) {
+            throw new ConnectionErrorException(curl_errno($channel), curl_error($channel));
+        }
         curl_close($channel);
 
         return $response;

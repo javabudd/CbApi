@@ -2,8 +2,8 @@
 
 namespace CBApi;
 
-use CBApi\Rest\Get;
-use CBApi\Rest\Put;
+use CBApi\Rest\GetRest;
+use CBApi\Rest\PutRest;
 use CBApi\Connection\Request;
 
 include __DIR__ . '/../../vendor/autoload.php';
@@ -14,11 +14,11 @@ include __DIR__ . '/../../vendor/autoload.php';
  */
 class Api
 {
-    /** @var Get */
-    private $get;
+    /** @var GetRest */
+    private $getRest;
 
-    /** @var Put */
-    private $put;
+    /** @var PutRest */
+    private $putRest;
 
     /** @var Request */
     private $request;
@@ -40,27 +40,27 @@ class Api
     }
 
     /**
-     * @return Get
+     * @return GetRest
      */
-    public function doGetRequest()
+    public function get()
     {
-        if (null === $this->get) {
-            $this->get = new Get($this->getRequestObj());
+        if (null === $this->getRest) {
+            $this->getRest = new GetRest($this->getRequestObj());
         }
 
-        return $this->get;
+        return $this->getRest;
     }
 
     /**
-     * @return Put
+     * @return PutRest
      */
-    public function doPutRequest()
+    public function put()
     {
-        if (null === $this->put) {
-            $this->put = new Put($this->getRequestObj());
+        if (null === $this->putRest) {
+            $this->putRest = new PutRest($this->getRequestObj());
         }
 
-        return $this->put;
+        return $this->putRest;
     }
 
     /**

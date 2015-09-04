@@ -2,17 +2,20 @@
 
 namespace CBApi\Rest;
 
+use CBApi\Exception\ConnectionErrorException;
+
 /**
  * Class Put
  * @package CBApi\Rest
  */
-class Put extends RestAbstract
+class PutRest extends RestAbstract
 {
     /**
      * Apply new license to server
      *
      * @param $license
      * @return mixed
+     * @throws ConnectionErrorException
      */
     public function license($license)
     {
@@ -30,6 +33,7 @@ class Put extends RestAbstract
      *
      * @param $config
      * @return mixed
+     * @throws ConnectionErrorException
      */
     public function platformServerConfig($config)
     {

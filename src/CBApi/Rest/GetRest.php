@@ -2,11 +2,14 @@
 
 namespace CBApi\Rest;
 
+use CBApi\Exception\ConnectionErrorException;
+use CBApi\Exception\InvalidSensorException;
+
 /**
  * Class Get
  * @package CBApi\Rest
  */
-class Get extends RestAbstract
+class GetRest extends RestAbstract
 {
     /**
      * Provides high-level information about the Carbon Black Enterprise Server.
@@ -14,6 +17,7 @@ class Get extends RestAbstract
      * Returns a json encoded array with the following fields: version(version of the Carbon Black Enterprise Server).
      *
      * @return string
+     * @throws ConnectionErrorException
      */
     public function info()
     {
@@ -24,6 +28,7 @@ class Get extends RestAbstract
      * Provides a summary of the current applied license
      *
      * @return string
+     * @throws ConnectionErrorException
      */
     public function licenseStatus()
     {
@@ -37,6 +42,7 @@ class Get extends RestAbstract
      * Note: the secret is never available (via query) for remote callers, although it can be applied.
      *
      * @return string
+     * @throws ConnectionErrorException
      */
     public function platformServerConfig()
     {
@@ -60,6 +66,7 @@ class Get extends RestAbstract
      * @param string $sort
      * @param bool|true $facet
      * @return mixed
+     * @throws ConnectionErrorException
      */
     public function processSearch($query='', $start=0, $rows=10, $sort='last_update desc', $facet=true)
     {
@@ -77,6 +84,7 @@ class Get extends RestAbstract
      * @param $segment
      * @param int $children_count
      * @return mixed
+     * @throws ConnectionErrorException
      */
     public function processSummary($id, $segment=0, $children_count=15)
     {
@@ -90,6 +98,7 @@ class Get extends RestAbstract
      * @param $id
      * @param $segment
      * @return mixed
+     * @throws ConnectionErrorException
      */
     public function processEvents($id, $segment=0)
     {
@@ -102,6 +111,7 @@ class Get extends RestAbstract
      * @param $id
      * @param int $segment
      * @return mixed
+     * @throws ConnectionErrorException
      */
     public function processReport($id, $segment=0)
     {
@@ -118,6 +128,7 @@ class Get extends RestAbstract
      * @param string $sort
      * @param bool|true $facet
      * @return mixed
+     * @throws ConnectionErrorException
      */
     public function binarySearch($query='', $start=0, $rows=10, $sort='server_added_timestamp desc', $facet=true)
     {
@@ -131,6 +142,7 @@ class Get extends RestAbstract
      *
      * @param $md5
      * @return mixed
+     * @throws ConnectionErrorException
      */
     public function binarySummary($md5)
     {
@@ -142,6 +154,7 @@ class Get extends RestAbstract
      *
      * @param $md5hash
      * @return mixed
+     * @throws ConnectionErrorException
      */
     public function binary($md5hash)
     {
@@ -157,6 +170,7 @@ class Get extends RestAbstract
      *
      * @param array $query_params
      * @return mixed
+     * @throws ConnectionErrorException
      */
     public function sensors(array $query_params)
     {
@@ -178,17 +192,14 @@ class Get extends RestAbstract
      * @param $type
      * @param int $group_id
      * @return mixed
-     * @throws \InvalidArgumentException
+     * @throws InvalidSensorException
+     * @throws ConnectionErrorException
      */
     public function sensorInstaller($type, $group_id=1)
     {
         $mapping = $this->getSensorMapping($group_id);
-
         if (!array_key_exists($type, $mapping)) {
-            throw new \InvalidArgumentException(
-                sprintf('Invalid type, should be one of "WindowsEXE", "WindowsMSI", "OSX", or "Linux", given %s',
-                    $type)
-            );
+            throw new InvalidSensorException($type);
         }
 
         return $this->request->getRequest($mapping[$type]);
