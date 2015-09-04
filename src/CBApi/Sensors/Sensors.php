@@ -26,14 +26,14 @@ class Sensors
     }
 
     /**
-     * @param $group_id
+     * @param $groupId
      * @return array
      */
-    public static function getSensorMapping($group_id)
+    public static function getSensorMapping($groupId)
     {
         return array_map(
-            function ($url) use ($group_id) {
-                return str_replace('{group_id}', $group_id, $url);
+            function ($url) use ($groupId) {
+                return str_replace('{group_id}', $groupId, $url);
             },
             self::getSensors()
         );

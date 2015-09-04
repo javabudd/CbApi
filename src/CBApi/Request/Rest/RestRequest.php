@@ -13,14 +13,14 @@ use CBApi\Sensors\Sensors;
 class RestRequest
 {
     /** @var RestConnection */
-    protected $request;
+    protected $restConnection;
 
     /**
-     * @param RestConnection $request
+     * @param RestConnection $restConnection
      */
-    public function __construct(RestConnection $request)
+    public function __construct(RestConnection $restConnection)
     {
-        $this->request = $request;
+        $this->restConnection = $restConnection;
     }
 
     /**

@@ -23,7 +23,7 @@ class GetRequest extends RestRequest
      */
     public function info()
     {
-        return $this->request->getRequest('/api/info');
+        return $this->restConnection->getRequest('/api/info');
     }
 
     /**
@@ -34,7 +34,7 @@ class GetRequest extends RestRequest
      */
     public function licenseStatus()
     {
-        return $this->request->getRequest('/api/v1/license');
+        return $this->restConnection->getRequest('/api/v1/license');
     }
 
     /**
@@ -48,7 +48,7 @@ class GetRequest extends RestRequest
      */
     public function platformServerConfig()
     {
-        return $this->request->getRequest('/api/v1/settings/global/platformserver');
+        return $this->restConnection->getRequest('/api/v1/settings/global/platformserver');
     }
 
     /**
@@ -62,18 +62,19 @@ class GetRequest extends RestRequest
      *             results will be sorted by this param.
      *     facet_enabled - Enable facets on the result set. Defaults to enable facets (True)
      *
-     * @param string $query
-     * @param int $start
-     * @param int $rows
-     * @param string $sort
+     * @param string    $query
+     * @param int       $start
+     * @param int       $rows
+     * @param string    $sort
      * @param bool|true $facet
      * @return mixed
      * @throws ConnectionErrorException
      */
-    public function processSearch($query='', $start=0, $rows=10, $sort='last_update desc', $facet=true)
+    public function processSearch($query = '', $start = 0, $rows = 10, $sort = 'last_update desc', $facet = true)
     {
-        return $this->request->postRequest(
-            '/api/v1/process', $this->getBaseSearch($query, $start, $rows, $sort, $facet)
+        return $this->restConnection->postRequest(
+            '/api/v1/process',
+            $this->getBaseSearch($query, $start, $rows, $sort, $facet)
         );
     }
 
@@ -82,15 +83,17 @@ class GetRequest extends RestRequest
      * as well as a segment, also found from a process search result.
      * The results will be limited to children_count children metadata structures.
      *
-     * @param $id
-     * @param $segment
+     * @param     $id
+     * @param     $segment
      * @param int $childrenCount
      * @return mixed
      * @throws ConnectionErrorException
      */
-    public function processSummary($id, $segment=0, $childrenCount=15)
+    public function processSummary($id, $segment = 0, $childrenCount = 15)
     {
-        return $this->request->getRequest(sprintf('/api/v1/process/%s/%s?children=%d', $id, $segment, $childrenCount));
+        return $this->restConnection->getRequest(
+            sprintf('/api/v1/process/%s/%s?children=%d', $id, $segment, $childrenCount)
+        );
     }
 
     /**
@@ -102,40 +105,47 @@ class GetRequest extends RestRequest
      * @return mixed
      * @throws ConnectionErrorException
      */
-    public function processEvents($id, $segment=0)
+    public function processEvents($id, $segment = 0)
     {
-        return $this->request->getRequest(sprintf('/api/v1/process/%s/%s/event', $id, $segment));
+        return $this->restConnection->getRequest(sprintf('/api/v1/process/%s/%s/event', $id, $segment));
     }
 
     /**
      * Download a "report" package describing the process the format of this report is subject to change
      *
-     * @param $id
+     * @param     $id
      * @param int $segment
      * @return mixed
      * @throws ConnectionErrorException
      */
-    public function processReport($id, $segment=0)
+    public function processReport($id, $segment = 0)
     {
-        return $this->request->getRequest(sprintf('/api/v1/process/%s/%s/report', $id, $segment));
+        return $this->restConnection->getRequest(sprintf('/api/v1/process/%s/%s/report', $id, $segment));
     }
 
     /**
      * Refer to documentation for processSearch
+     *
      * @see processSearch
      *
-     * @param string $query
-     * @param int $start
-     * @param int $rows
-     * @param string $sort
+     * @param string    $query
+     * @param int       $start
+     * @param int       $rows
+     * @param string    $sort
      * @param bool|true $facet
      * @return mixed
      * @throws ConnectionErrorException
      */
-    public function binarySearch($query='', $start=0, $rows=10, $sort='server_added_timestamp desc', $facet=true)
-    {
-        return $this->request->postRequest(
-            '/api/v1/binary', $this->getBaseSearch($query, $start, $rows, $sort, $facet)
+    public function binarySearch(
+        $query = '',
+        $start = 0,
+        $rows = 10,
+        $sort = 'server_added_timestamp desc',
+        $facet = true
+    ) {
+        return $this->restConnection->postRequest(
+            '/api/v1/binary',
+            $this->getBaseSearch($query, $start, $rows, $sort, $facet)
         );
     }
 
@@ -148,7 +158,7 @@ class GetRequest extends RestRequest
      */
     public function binarySummary($md5)
     {
-        return $this->request->getRequest(sprintf('/api/v1/binary/%s/summary', $md5));
+        return $this->restConnection->getRequest(sprintf('/api/v1/binary/%s/summary', $md5));
     }
 
     /**
@@ -160,7 +170,7 @@ class GetRequest extends RestRequest
      */
     public function binary($md5hash)
     {
-        return $this->request->getRequest(sprintf('/api/v1/binary/%s', $md5hash));
+        return $this->restConnection->getRequest(sprintf('/api/v1/binary/%s', $md5hash));
     }
 
     /**
@@ -182,7 +192,7 @@ class GetRequest extends RestRequest
             $action .= $key . '=' . $param . '&';
         }
 
-        return $this->request->getRequest($action);
+        return $this->restConnection->getRequest($action);
     }
 
     /**
@@ -191,19 +201,19 @@ class GetRequest extends RestRequest
      *     group_id - the group_id to download an installer for; defaults to 1 "Default Group"
      *     type - the sensor installer type. [WindowsEXE|WindowsMSI|OSX|Linux]
      *
-     * @param $type
+     * @param     $type
      * @param int $groupId
      * @return mixed
      * @throws InvalidSensorException
      * @throws ConnectionErrorException
      */
-    public function sensorInstaller($type, $groupId=1)
+    public function sensorInstaller($type, $groupId = 1)
     {
         $mapping = $this->getSensorMapping($groupId);
         if (!array_key_exists($type, $mapping)) {
             throw new InvalidSensorException($type);
         }
 
-        return $this->request->getRequest($mapping[$type]);
+        return $this->restConnection->getRequest($mapping[$type]);
     }
 }

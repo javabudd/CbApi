@@ -41,7 +41,7 @@ class RestConnection
     }
 
     /**
-     * @param $action
+     * @param       $action
      * @param array $data
      * @return mixed
      * @throws ConnectionErrorException
@@ -85,7 +85,9 @@ class RestConnection
      */
     private function setBaseOptions($channel)
     {
-        curl_setopt($channel, CURLOPT_HTTPHEADER,
+        curl_setopt(
+            $channel,
+            CURLOPT_HTTPHEADER,
             array('Content-Type: application/json', 'Accept: application/json', 'X-Auth-Token: ' . $this->apiKey)
         );
         curl_setopt($channel, CURLOPT_RETURNTRANSFER, true);

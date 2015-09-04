@@ -21,7 +21,7 @@ class PutRequest extends RestRequest
      */
     public function license($license)
     {
-        return $this->request->postRequest('/api/v1/license', array('license' => $license));
+        return $this->restConnection->postRequest('/api/v1/license', array('license' => $license));
     }
 
     /**
@@ -39,6 +39,6 @@ class PutRequest extends RestRequest
      */
     public function platformServerConfig($config)
     {
-        return $this->request->postRequest('/api/v1/settings/global/platformserver', $config);
+        return $this->restConnection->postRequest('/api/v1/settings/global/platformserver', $config);
     }
 }
