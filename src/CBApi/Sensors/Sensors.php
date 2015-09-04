@@ -1,11 +1,11 @@
 <?php
 
-namespace CBApi\Rest;
+namespace CBApi\Sensors;
 
 /**
  * Class Sensors
  *
- * @package CBApi\Rest
+ * @package CBApi\Sensors
  */
 class Sensors
 {

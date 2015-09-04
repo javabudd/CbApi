@@ -1,14 +1,16 @@
 <?php
 
-namespace CBApi\Rest;
+namespace CBApi\Request;
 
-use CBApi\Exception\ConnectionErrorException;
+use CBApi\Request\Rest\RestRequest;
+use CBApi\Connection\Exception\ConnectionErrorException;
 
 /**
- * Class Put
- * @package CBApi\Rest
+ * Class PutRequest
+ *
+ * @package CBApi\Request
  */
-class PutRest extends RestAbstract
+class PutRequest extends RestRequest
 {
     /**
      * Apply new license to server

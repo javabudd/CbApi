@@ -2,19 +2,20 @@
 
 namespace CBApi\Connection;
 
-use CBApi\Exception\ConnectionErrorException;
+use CBApi\Connection\Exception\ConnectionErrorException;
 
 /**
- * Class Request
+ * Class RestConnection
+ *
  * @package CBApi\Connection
  */
-class Request
+class RestConnection
 {
     /** @var string */
     protected $url;
 
     /** @var string */
-    protected $api_key;
+    protected $apiKey;
 
     /**
      * @param $url
@@ -22,8 +23,8 @@ class Request
      */
     public function __construct($url, $api_key)
     {
-        $this->url     = $url;
-        $this->api_key = $api_key;
+        $this->url    = $url;
+        $this->apiKey = $api_key;
     }
 
     /**
@@ -85,7 +86,7 @@ class Request
     private function setBaseOptions($channel)
     {
         curl_setopt($channel, CURLOPT_HTTPHEADER,
-            array('Content-Type: application/json', 'Accept: application/json', 'X-Auth-Token: ' . $this->api_key)
+            array('Content-Type: application/json', 'Accept: application/json', 'X-Auth-Token: ' . $this->apiKey)
         );
         curl_setopt($channel, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($channel, CURLOPT_SSL_VERIFYHOST, false);

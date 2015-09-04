@@ -1,22 +1,24 @@
 <?php
 
-namespace CBApi\Rest;
+namespace CBApi\Request\Rest;
 
-use CBApi\Connection\Request;
+use CBApi\Connection\RestConnection;
+use CBApi\Sensors\Sensors;
 
 /**
- * Class RestAbstract
- * @package CBApi\Rest
+ * Class RestRequest
+ *
+ * @package CBApi\Request\Rest
  */
-abstract class RestAbstract
+class RestRequest
 {
-    /** @var Request */
+    /** @var RestConnection */
     protected $request;
 
     /**
-     * @param Request $request
+     * @param RestConnection $request
      */
-    public function __construct(Request $request)
+    public function __construct(RestConnection $request)
     {
         $this->request = $request;
     }
@@ -47,11 +49,11 @@ abstract class RestAbstract
     }
 
     /**
-     * @param $group_id
+     * @param $groupId
      * @return array
      */
-    protected function getSensorMapping($group_id)
+    protected function getSensorMapping($groupId)
     {
-        return Sensors::getSensorMapping($group_id);
+        return Sensors::getSensorMapping($groupId);
     }
 }

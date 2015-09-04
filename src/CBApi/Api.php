@@ -2,76 +2,77 @@
 
 namespace CBApi;
 
-use CBApi\Rest\GetRest;
-use CBApi\Rest\PutRest;
-use CBApi\Connection\Request;
+use CBApi\Request\GetRequest;
+use CBApi\Request\PutRequest;
+use CBApi\Connection\RestConnection;
 
 include __DIR__ . '/../../vendor/autoload.php';
 
 /**
  * Class Api
- * @package Api
+ *
+ * @package CBApi
  */
 class Api
 {
-    /** @var GetRest */
-    private $getRest;
+    /** @var GetRequest */
+    private $getRequest;
 
-    /** @var PutRest */
-    private $putRest;
+    /** @var PutRequest */
+    private $putRequest;
 
-    /** @var Request */
-    private $request;
-
-    /** @var string */
-    private $api_url;
+    /** @var RestConnection */
+    private $restConnection;
 
     /** @var string */
-    private $api_key;
+    private $apiUrl;
+
+    /** @var string */
+    private $apiKey;
 
     /**
-     * @param $api_url
-     * @param $api_key
+     * @param $apiUrl
+     * @param $apiKey
      */
-    public function __construct($api_url, $api_key)
+    public function __construct($apiUrl, $apiKey)
     {
-        $this->api_url = $api_url;
-        $this->api_key = $api_key;
+        $this->apiUrl = $apiUrl;
+        $this->apiKey = $apiKey;
     }
 
     /**
-     * @return GetRest
+     * @return GetRequest
      */
     public function get()
     {
-        if (null === $this->getRest) {
-            $this->getRest = new GetRest($this->getRequestObj());
+        if (null === $this->getRequest) {
+            $this->getRequest = new GetRequest($this->getRestConnection());
         }
 
-        return $this->getRest;
+        return $this->getRequest;
     }
 
     /**
-     * @return PutRest
+     * @return PutRequest
      */
     public function put()
     {
-        if (null === $this->putRest) {
-            $this->putRest = new PutRest($this->getRequestObj());
+        if (null === $this->putRequest) {
+            $this->putRequest = new PutRequest($this->getRestConnection());
         }
 
-        return $this->putRest;
+        return $this->putRequest;
     }
 
     /**
-     * @return Request
+     * @return RestConnection
      */
-    private function getRequestObj()
+    private function getRestConnection()
     {
-        if (null === $this->request) {
-            $this->request = new Request($this->api_url, $this->api_key);
+        if (null === $this->restConnection) {
+            $this->restConnection = new RestConnection($this->apiUrl, $this->apiKey);
         }
 
-        return $this->request;
+        return $this->restConnection;
     }
 }

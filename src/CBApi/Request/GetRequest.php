@@ -1,15 +1,17 @@
 <?php
 
-namespace CBApi\Rest;
+namespace CBApi\Request;
 
-use CBApi\Exception\ConnectionErrorException;
-use CBApi\Exception\InvalidSensorException;
+use CBApi\Request\Rest\RestRequest;
+use CBApi\Connection\Exception\ConnectionErrorException;
+use CBApi\Sensors\Exception\InvalidSensorException;
 
 /**
- * Class Get
- * @package CBApi\Rest
+ * Class GetRequest
+ *
+ * @package CBApi\Request
  */
-class GetRest extends RestAbstract
+class GetRequest extends RestRequest
 {
     /**
      * Provides high-level information about the Carbon Black Enterprise Server.
@@ -82,13 +84,13 @@ class GetRest extends RestAbstract
      *
      * @param $id
      * @param $segment
-     * @param int $children_count
+     * @param int $childrenCount
      * @return mixed
      * @throws ConnectionErrorException
      */
-    public function processSummary($id, $segment=0, $children_count=15)
+    public function processSummary($id, $segment=0, $childrenCount=15)
     {
-        return $this->request->getRequest(sprintf('/api/v1/process/%s/%s?children=%d', $id, $segment, $children_count));
+        return $this->request->getRequest(sprintf('/api/v1/process/%s/%s?children=%d', $id, $segment, $childrenCount));
     }
 
     /**
@@ -168,15 +170,15 @@ class GetRest extends RestAbstract
      *     hostname - any portion of a hostname, case sensitive
      *     groupid - the sensor group id; must be numeric
      *
-     * @param array $query_params
+     * @param array $queryParams
      * @return mixed
      * @throws ConnectionErrorException
      */
-    public function sensors(array $query_params)
+    public function sensors(array $queryParams)
     {
         $action = '/api/v1/sensor?';
 
-        foreach ($query_params as $key => $param) {
+        foreach ($queryParams as $key => $param) {
             $action .= $key . '=' . $param . '&';
         }
 
@@ -190,14 +192,14 @@ class GetRest extends RestAbstract
      *     type - the sensor installer type. [WindowsEXE|WindowsMSI|OSX|Linux]
      *
      * @param $type
-     * @param int $group_id
+     * @param int $groupId
      * @return mixed
      * @throws InvalidSensorException
      * @throws ConnectionErrorException
      */
-    public function sensorInstaller($type, $group_id=1)
+    public function sensorInstaller($type, $groupId=1)
     {
-        $mapping = $this->getSensorMapping($group_id);
+        $mapping = $this->getSensorMapping($groupId);
         if (!array_key_exists($type, $mapping)) {
             throw new InvalidSensorException($type);
         }

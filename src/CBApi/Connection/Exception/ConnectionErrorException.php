@@ -1,11 +1,11 @@
 <?php
 
-namespace CBApi\Exception;
+namespace CBApi\Connection\Exception;
 
 /**
  * Class ConnectionErrorException
  *
- * @package CBApi\Exception
+ * @package CBApi\Connection\Exception
  */
 class ConnectionErrorException extends \Exception
 {

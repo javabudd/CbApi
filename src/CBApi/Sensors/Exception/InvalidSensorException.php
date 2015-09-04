@@ -1,13 +1,13 @@
 <?php
 
-namespace CBApi\Exception;
+namespace CBApi\Sensors\Exception;
 
-use CBApi\Rest\Sensors;
+use CBApi\Sensors\Sensors;
 
 /**
  * Class InvalidSensorException
  *
- * @package CBApi\Exception
+ * @package CBApi\Sensors\Exception
  */
 class InvalidSensorException extends \Exception
 {

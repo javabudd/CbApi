@@ -2,10 +2,10 @@
 
 namespace CBApi\Tests;
 
-use CBApi\Connection\Request;
-use CBApi\Rest\GetRest;
-use CBApi\Rest\PutRest;
-use CBApi\Exception\ConnectionErrorException;
+use CBApi\Connection\RestConnection;
+use CBApi\Request\GetRequest;
+use CBApi\Request\PutRequest;
+use CBApi\Connection\Exception\ConnectionErrorException;
 
 /**
  * Class ApiTest
@@ -14,14 +14,14 @@ use CBApi\Exception\ConnectionErrorException;
  */
 class ApiTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var \CBApi\Rest\GetRest */
-    private $getRest;
+    /** @var GetRequest */
+    private $getRequest;
 
-    /** @var \CBApi\Rest\PutRest */
-    private $putRest;
+    /** @var PutRequest */
+    private $putRequest;
 
-    /** @var \CBApi\Connection\Request */
-    private $request;
+    /** @var RestConnection */
+    private $restConnection;
 
     /** @var array */
     private static $generalData = [
@@ -47,84 +47,84 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->request = new Request(self::$generalData['url'], self::$generalData['api_key']);
+        $this->restConnection = new RestConnection(self::$generalData['url'], self::$generalData['api_key']);
     }
 
     /**
      * @dataProvider connectionProvider
-     * @param $api_key
+     * @param $apiKey
      * @param $url
      */
-    public function testRequestObj($url, $api_key)
+    public function testRestConnection($url, $apiKey)
     {
-        self::assertNotNull($this->createRequestObj($url, $api_key));
+        self::assertNotNull($this->createRestConnection($url, $apiKey));
     }
 
     /**
-     * @depends testRequestObj
+     * @depends testRestConnection
      */
-    public function testGetNotNull()
+    public function testGetRequestNotNull()
     {
-        self::assertNotNull($this->getGetObj());
+        self::assertNotNull($this->getGetRequest());
     }
 
     /**
-     * @depends testRequestObj
+     * @depends testRestConnection
      */
-    public function testPutNotNull()
+    public function testPutRequestNotNull()
     {
-        self::assertNotNull($this->getPutObj());
+        self::assertNotNull($this->getPutRequest());
     }
 
     /**
-     * @depends testGetNotNull
+     * @depends testGetRequestNotNull
      */
     public function testBadGetConnection()
     {
         self::setExpectedException(ConnectionErrorException::class);
-        self::assertEquals(false, $this->getGetObj()->info());
+        self::assertEquals(false, $this->getGetRequest()->info());
     }
 
     /**
-     * @depends testPutNotNull
+     * @depends testPutRequestNotNull
      */
     public function testBadPutConnection()
     {
         self::setExpectedException(ConnectionErrorException::class);
-        self::assertEquals(false, $this->getPutObj()->license(self::$generalData['license']));
+        self::assertEquals(false, $this->getPutRequest()->license(self::$generalData['license']));
     }
 
     /**
-     * @return \CBApi\Rest\GetRest
+     * @return GetRequest
      */
-    private function getGetObj()
+    private function getGetRequest()
     {
-        if (!$this->getRest) {
-            $this->getRest = new GetRest($this->request);
+        if (!$this->getRequest) {
+            $this->getRequest = new GetRequest($this->restConnection);
         }
 
-        return $this->getRest;
+        return $this->getRequest;
     }
 
     /**
-     * @return \CBApi\Rest\PutRest
+     * @return PutRequest
      */
-    private function getPutObj()
+    private function getPutRequest()
     {
-        if (!$this->putRest) {
-            $this->putRest = new PutRest($this->request);
+        if (!$this->putRequest) {
+            $this->putRequest = new PutRequest($this->restConnection);
         }
 
-        return $this->putRest;
+        return $this->putRequest;
     }
 
     /**
      * @param $url
-     * @param $api_key
-     * @return \CBApi\Connection\Request
+     * @param $apiKey
+     * @return \CBApi\Connection\RestConnection
      */
-    private function createRequestObj($url, $api_key)
+    private function createRestConnection($url, $apiKey)
     {
-        return new Request($url, $api_key);
+        return new RestConnection($url, $apiKey);
     }
 }
