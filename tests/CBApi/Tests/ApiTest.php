@@ -2,9 +2,7 @@
 
 namespace CBApi\Tests;
 
-use CBApi\Connection\RestConnection;
-use CBApi\Rest\V1\Request\Get\GetRequest;
-use CBApi\Rest\V1\Request\Put\PutRequest;
+use CBApi\Api;
 use CBApi\Sensors\Sensors;
 
 /**
@@ -14,14 +12,8 @@ use CBApi\Sensors\Sensors;
  */
 class ApiTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var GetRequest */
-    private $getRequest;
-
-    /** @var PutRequest */
-    private $putRequest;
-
-    /** @var RestConnection */
-    private $restConnection;
+    /** @var Api */
+    private $api;
 
     /** @var array */
     private static $generalData = [
@@ -47,33 +39,50 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->restConnection = new RestConnection(self::$generalData['url'], self::$generalData['api_key']);
+        $this->api = new Api(self::$generalData['url'], self::$generalData['api_key']);
     }
 
     /**
      * @dataProvider connectionProvider
+     * @param $apiUrl
      * @param $apiKey
-     * @param $url
      */
-    public function testRestConnection($url, $apiKey)
+    public function testApi($apiUrl, $apiKey)
     {
-        self::assertNotNull($this->createRestConnection($url, $apiKey));
+        $api = new Api($apiUrl, $apiKey);
+        self::assertNotNull($api);
     }
 
     /**
-     * @depends testRestConnection
+     * @depends testApi
      */
-    public function testGetRequestNotNull()
+    public function testApiDelete()
     {
-        self::assertNotNull($this->getGetRequest());
+        self::assertNotNull($this->api->delete());
     }
 
     /**
-     * @depends testRestConnection
+     * @depends testApi
      */
-    public function testPutRequestNotNull()
+    public function testApiGet()
     {
-        self::assertNotNull($this->getPutRequest());
+        self::assertNotNull($this->api->get());
+    }
+
+    /**
+     * @depends testApi
+     */
+    public function testApiPut()
+    {
+        self::assertNotNull($this->api->put());
+    }
+
+    /**
+     * @depends testApi
+     */
+    public function testApiPost()
+    {
+        self::assertNotNull($this->api->post());
     }
 
     /**
@@ -82,39 +91,5 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     public function testSensorFound()
     {
         self::assertTrue(is_string(Sensors::getSensor('WindowsEXE', 1)));
-    }
-
-    /**
-     * @return GetRequest
-     */
-    private function getGetRequest()
-    {
-        if (!$this->getRequest) {
-            $this->getRequest = new GetRequest($this->restConnection);
-        }
-
-        return $this->getRequest;
-    }
-
-    /**
-     * @return PutRequest
-     */
-    private function getPutRequest()
-    {
-        if (!$this->putRequest) {
-            $this->putRequest = new PutRequest($this->restConnection);
-        }
-
-        return $this->putRequest;
-    }
-
-    /**
-     * @param $url
-     * @param $apiKey
-     * @return \CBApi\Connection\RestConnection
-     */
-    private function createRestConnection($url, $apiKey)
-    {
-        return new RestConnection($url, $apiKey);
     }
 }

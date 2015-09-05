@@ -2,10 +2,10 @@
 
 namespace CBApi;
 
-use CBApi\Request\Get\GetRequest;
-use CBApi\Request\Post\PostRequest;
-use CBApi\Request\Put\PutRequest;
-use CBApi\Request\Delete\DeleteRequest;
+use CBApi\Rest\V1\Request\Get\GetRequest;
+use CBApi\Rest\V1\Request\Post\PostRequest;
+use CBApi\Rest\V1\Request\Put\PutRequest;
+use CBApi\Rest\V1\Request\Delete\DeleteRequest;
 use CBApi\Connection\RestConnection;
 
 include __DIR__ . '/../../vendor/autoload.php';
