@@ -74,7 +74,7 @@ class GetRequest extends RestRequest
     {
         return $this->restConnection->postRequest(
             '/api/v1/process',
-            $this->getBaseSearch($query, $start, $rows, $sort, $facet)
+            $this->getBaseSearchQuery($query, $start, $rows, $sort, $facet)
         );
     }
 
@@ -145,7 +145,7 @@ class GetRequest extends RestRequest
     ) {
         return $this->restConnection->postRequest(
             '/api/v1/binary',
-            $this->getBaseSearch($query, $start, $rows, $sort, $facet)
+            $this->getBaseSearchQuery($query, $start, $rows, $sort, $facet)
         );
     }
 
@@ -210,5 +210,28 @@ class GetRequest extends RestRequest
     public function sensorInstaller($name, $groupId = 1)
     {
         return $this->restConnection->getRequest($this->getSensor($name, $groupId));
+    }
+
+    /**
+     * Retrieves a summary of aggregate sensor backlog across all active sensors
+     *
+     * @return mixed
+     * @throws ConnectionErrorException
+     */
+    public function sensorBacklog()
+    {
+        return $this->restConnection->getRequest('/api/v1/sensor/statistics');
+    }
+
+    /**
+     * Get all watchlists or a single watchlist
+     *
+     * @param null|string $id
+     * @return mixed
+     * @throws ConnectionErrorException
+     */
+    public function watchlist($id = null)
+    {
+        return $this->restConnection->getRequest("/api/v1/watchlist/{$id}");
     }
 }

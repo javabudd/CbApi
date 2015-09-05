@@ -8,9 +8,25 @@ $api = new \CBApi\Api('https://localhost', 'XXXXXXXXXXXXXXXXXXXXXXXXXX');
 $api->get()->info();
 $api->get()->processSearch('process_name:svchost.exe -path:c:\\windows\\');
 $api->get()->sensorInstaller('WindowsEXE');
+$api->get()->processSummary(1, 1, 10);
 
 /** Put */
 $api->put()->license(XXXXXXXXXXXXXXXXXXXXX);
-$config = array('username' => 'example', 'password' => 'example', 'server' => 'localhost');
-$api->put()->platformServerConfig($config);
+$api->put()->platformServerConfig(
+    [
+        'username' => 'example',
+        'password' => 'example',
+        'server'   => 'localhost'
+    ]
+);
+$api->put()->addWatchList(
+    [
+        'basicQueryValidation' => true,
+        'type'                 => 'events',
+        'searchQuery'          => 'q=test1=1&test2=2',
+        'cbUrlVer'             => 'cb.urlver=1',
+        'name'                 => 'test',
+        'readOnly'             => false
+    ]
+);
 ```
