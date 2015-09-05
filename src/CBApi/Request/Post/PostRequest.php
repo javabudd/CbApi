@@ -5,6 +5,10 @@ namespace CBApi\Request\Post;
 use CBApi\Request\RestRequest;
 use CBApi\Connection\Exception\ConnectionErrorException;
 use CBApi\Request\QueryException;
+use CBApi\Rest\V1\Formatter\SearchQueryFormatter;
+use InvalidArgumentException;
+use CBApi\Rest\V1\Formatter\WatchlistSearchQueryFormatter;
+use CBApi\Rest\V1\Validator\WatchlistParameterValidator;
 
 /**
  * Class PostRequest
@@ -61,12 +65,22 @@ class PostRequest extends RestRequest
      * @param bool|true $facet
      * @return mixed
      * @throws ConnectionErrorException
+     * @throws InvalidArgumentException
      */
     public function processSearch($query = '', $start = 0, $rows = 10, $sort = 'last_update desc', $facet = true)
     {
+        $searchQueryFormatter = new SearchQueryFormatter();
         return $this->postRequest(
             '/api/v1/process',
-            $this->getBaseSearchQuery($query, $start, $rows, $sort, $facet)
+            $searchQueryFormatter->format(
+                [
+                    'query' => $query,
+                    'start' => $start,
+                    'rows'  => $rows,
+                    'sort'  => $sort,
+                    'facet' => $facet
+                ]
+            )
         );
     }
 
@@ -82,6 +96,7 @@ class PostRequest extends RestRequest
      * @param bool|true $facet
      * @return mixed
      * @throws ConnectionErrorException
+     * @throws InvalidArgumentException
      */
     public function binarySearch(
         $query = '',
@@ -90,9 +105,18 @@ class PostRequest extends RestRequest
         $sort = 'server_added_timestamp desc',
         $facet = true
     ) {
+        $searchQueryFormatter = new SearchQueryFormatter();
         return $this->postRequest(
             '/api/v1/binary',
-            $this->getBaseSearchQuery($query, $start, $rows, $sort, $facet)
+            $searchQueryFormatter->format(
+                [
+                    'query' => $query,
+                    'start' => $start,
+                    'rows'  => $rows,
+                    'sort'  => $sort,
+                    'facet' => $facet
+                ]
+            )
         );
     }
 
@@ -114,16 +138,24 @@ class PostRequest extends RestRequest
      * @return mixed
      * @throws QueryException
      * @throws ConnectionErrorException
+     * @throws InvalidArgumentException
      */
     public function addWatchList(array $params)
     {
         $data['search_query'] = 'cb.urlver=1';
         if (array_key_exists('basicQueryValidation', $params) && false !== $params['basicQueryValidation']) {
-            $this->verifyWatchlistParameters($params);
+            $watchlistValidator = new WatchlistParameterValidator();
+            $watchlistFormatter = new WatchlistSearchQueryFormatter();
+            $watchlistValidator->validate($params);
             $data = [
                 'index_type'   => $params['type'],
                 'name'         => $params['name'],
-                'search_query' => $this->formatWatchlistSearchQuery($params['cbUrlVer'], $params['searchQuery'])
+                'search_query' => $watchlistFormatter->format(
+                    [
+                        'cbUrlVer'    => $params['cbUrlVer'],
+                        'searchQuery' => $params['searchQuery']
+                    ]
+                )
             ];
         }
 
