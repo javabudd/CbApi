@@ -4,6 +4,11 @@ namespace CBApi\Rest\V1\Validator;
 
 use CBApi\Rest\V1\Request\QueryException;
 
+/**
+ * Class WatchlistParameterValidator
+ *
+ * @package CBApi\Rest\V1\Validator
+ */
 class WatchlistParameterValidator implements ValidatorInterface
 {
     /** @var array */

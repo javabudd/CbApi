@@ -2,7 +2,7 @@
 
 namespace CBApi\Rest\V1\Formatter;
 
-use CBApi\Request\QueryException;
+use CBApi\Rest\V1\Request\QueryException;
 use InvalidArgumentException;
 
 /**
