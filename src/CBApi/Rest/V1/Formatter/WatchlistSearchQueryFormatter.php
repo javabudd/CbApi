@@ -20,7 +20,7 @@ class WatchlistSearchQueryFormatter implements FormatterInterface
      */
     public function format(array $params)
     {
-        if (!array_key_exists('cbUrlVer', $params[]) && !array_key_exists('searchQuery', $params[])) {
+        if (!array_key_exists('cbUrlVer', $params) && !array_key_exists('searchQuery', $params)) {
             throw new InvalidArgumentException(
                 'Argument $params must include cbUrlVer and searchQuery keys'
             );

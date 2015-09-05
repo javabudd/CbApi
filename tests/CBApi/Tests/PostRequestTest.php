@@ -58,7 +58,7 @@ class PostRequestTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \CBApi\Request\QueryException
+     * @expectedException \CBApi\Rest\V1\Request\QueryException
      */
     public function testInvalidWatchlistSensorQuery()
     {
@@ -75,7 +75,7 @@ class PostRequestTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \CBApi\Request\QueryException
+     * @expectedException \CBApi\Rest\V1\Request\QueryException
      */
     public function testInvalidWatchlistCbUrlVer()
     {
@@ -92,7 +92,7 @@ class PostRequestTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \CBApi\Request\QueryException
+     * @expectedException \CBApi\Rest\V1\Request\QueryException
      */
     public function testInvalidWatchlistType()
     {
@@ -109,7 +109,7 @@ class PostRequestTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \CBApi\Request\QueryException
+     * @expectedException \CBApi\Rest\V1\Request\QueryException
      */
     public function testMissingWatchlistParameters()
     {
