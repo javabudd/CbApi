@@ -2,7 +2,7 @@
 
 namespace CBApi\Tests;
 
-use CBApi\Request\Delete\DeleteRequest;
+use CBApi\Rest\V1\Request\Delete\DeleteRequest;
 
 class DeleteRequestTest extends \PHPUnit_Framework_TestCase
 {

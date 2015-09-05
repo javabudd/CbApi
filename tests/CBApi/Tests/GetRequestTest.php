@@ -2,7 +2,7 @@
 
 namespace CBApi\Tests;
 
-use CBApi\Request\Get\GetRequest;
+use CBApi\Rest\V1\Request\Get\GetRequest;
 
 /**
  * Class GetRequestTest

@@ -1,15 +1,15 @@
 <?php
 
-namespace CBApi\Request\Get;
+namespace CBApi\Rest\V1\Request\Get;
 
-use CBApi\Request\RestRequest;
+use CBApi\Rest\V1\Request\RestRequest;
 use CBApi\Connection\Exception\ConnectionErrorException;
 use CBApi\Sensors\Exception\InvalidSensorException;
 
 /**
  * Class GetRequest
  *
- * @package CBApi\Request\Get
+ * @package CBApi\Rest\V1\Request\Get
  */
 class GetRequest extends RestRequest
 {

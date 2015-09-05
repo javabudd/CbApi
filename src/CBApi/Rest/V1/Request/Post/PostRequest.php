@@ -1,10 +1,10 @@
 <?php
 
-namespace CBApi\Request\Post;
+namespace CBApi\Rest\V1\Request\Post;
 
-use CBApi\Request\RestRequest;
+use CBApi\Rest\V1\Request\RestRequest;
 use CBApi\Connection\Exception\ConnectionErrorException;
-use CBApi\Request\QueryException;
+use CBApi\Rest\V1\Request\QueryException;
 use CBApi\Rest\V1\Formatter\SearchQueryFormatter;
 use InvalidArgumentException;
 use CBApi\Rest\V1\Formatter\WatchlistSearchQueryFormatter;
@@ -13,7 +13,7 @@ use CBApi\Rest\V1\Validator\WatchlistParameterValidator;
 /**
  * Class PostRequest
  *
- * @package CBApi\Request\Post
+ * @package CBApi\Rest\V1\Request\Post
  */
 class PostRequest extends RestRequest
 {

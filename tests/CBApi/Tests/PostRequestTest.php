@@ -2,7 +2,7 @@
 
 namespace CBApi\Tests;
 
-use CBApi\Request\Post\PostRequest;
+use CBApi\Rest\V1\Request\Post\PostRequest;
 
 /**
  * Class PostRequestTest

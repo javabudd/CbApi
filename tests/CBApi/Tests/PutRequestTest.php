@@ -2,7 +2,7 @@
 
 namespace CBApi\Tests;
 
-use CBApi\Request\Put\PutRequest;
+use CBApi\Rest\V1\Request\Put\PutRequest;
 
 /**
  * Class PutRequestTest

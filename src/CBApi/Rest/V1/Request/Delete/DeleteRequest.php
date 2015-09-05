@@ -1,14 +1,14 @@
 <?php
 
-namespace CBApi\Request\Delete;
+namespace CBApi\Rest\V1\Request\Delete;
 
-use CBApi\Request\RestRequest;
+use CBApi\Rest\V1\Request\RestRequest;
 use CBApi\Connection\Exception\ConnectionErrorException;
 
 /**
  * Class DeleteRequest
  *
- * @package CBApi\Request\Delete
+ * @package CBApi\Rest\V1\Request\Delete
  */
 class DeleteRequest extends RestRequest
 {

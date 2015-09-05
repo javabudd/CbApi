@@ -1,6 +1,6 @@
 <?php
 
-namespace CBApi\Request;
+namespace CBApi\Rest\V1\Request;
 
 use CBApi\Connection\RestConnection;
 use CBApi\Sensors\Sensors;
@@ -10,7 +10,7 @@ use CBApi\Connection\Exception\ConnectionErrorException;
 /**
  * Class RestRequest
  *
- * @package CBApi\Request
+ * @package CBApi\Rest\V1\Request
  */
 class RestRequest
 {

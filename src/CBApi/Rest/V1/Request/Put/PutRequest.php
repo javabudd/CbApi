@@ -1,14 +1,14 @@
 <?php
 
-namespace CBApi\Request\Put;
+namespace CBApi\Rest\V1\Request\Put;
 
-use CBApi\Request\RestRequest;
+use CBApi\Rest\V1\Request\RestRequest;
 use CBApi\Connection\Exception\ConnectionErrorException;
 
 /**
  * Class PutRequest
  *
- * @package CBApi\Request\Put
+ * @package CBApi\Rest\V1\Request\Put
  */
 class PutRequest extends RestRequest
 {

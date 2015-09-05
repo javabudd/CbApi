@@ -2,7 +2,7 @@
 
 namespace CBApi\Rest\V1\Validator;
 
-use CBApi\Request\QueryException;
+use CBApi\Rest\V1\Request\QueryException;
 
 class WatchlistParameterValidator implements ValidatorInterface
 {

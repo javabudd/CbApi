@@ -3,8 +3,8 @@
 namespace CBApi\Tests;
 
 use CBApi\Connection\RestConnection;
-use CBApi\Request\Get\GetRequest;
-use CBApi\Request\Put\PutRequest;
+use CBApi\Rest\V1\Request\Get\GetRequest;
+use CBApi\Rest\V1\Request\Put\PutRequest;
 use CBApi\Sensors\Sensors;
 
 /**
