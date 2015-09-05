@@ -19,12 +19,12 @@ class RestConnection
 
     /**
      * @param $url
-     * @param $api_key
+     * @param $apiKey
      */
-    public function __construct($url, $api_key)
+    public function __construct($url, $apiKey)
     {
         $this->url    = $url;
-        $this->apiKey = $api_key;
+        $this->apiKey = $apiKey;
     }
 
     /**
@@ -46,10 +46,38 @@ class RestConnection
      * @return mixed
      * @throws ConnectionErrorException
      */
+    public function putRequest($action, array $data)
+    {
+        $channel = $this->getChannel($action);
+        $this->setBaseOptions($channel)->setPutOptions($channel, json_encode($data));
+
+        return $this->curlExec($channel);
+    }
+
+    /**
+     * @param       $action
+     * @param array $data
+     * @return mixed
+     * @throws ConnectionErrorException
+     */
     public function postRequest($action, array $data)
     {
         $channel = $this->getChannel($action);
         $this->setBaseOptions($channel)->setPostOptions($channel, json_encode($data));
+
+        return $this->curlExec($channel);
+    }
+
+    /**
+     * @param       $action
+     * @param array $data
+     * @return mixed
+     * @throws ConnectionErrorException
+     */
+    public function deleteRequest($action, array $data)
+    {
+        $channel = $this->getChannel($action);
+        $this->setBaseOptions($channel)->setDeleteOptions($channel, json_encode($data));
 
         return $this->curlExec($channel);
     }
@@ -102,11 +130,46 @@ class RestConnection
      * @param $data
      * @return $this
      */
+    private function setPutOptions($channel, $data)
+    {
+        curl_setopt($channel, CURLOPT_CUSTOMREQUEST, 'PUT');
+        $this->setPostFields($channel, $data);
+
+        return $this;
+    }
+
+    /**
+     * @param $channel
+     * @param $data
+     * @return $this
+     */
     private function setPostOptions($channel, $data)
     {
         curl_setopt($channel, CURLOPT_POST, true);
-        curl_setopt($channel, CURLOPT_POSTFIELDS, $data);
+        $this->setPostFields($channel, $data);
 
         return $this;
+    }
+
+    /**
+     * @param $channel
+     * @param $data
+     * @return $this
+     */
+    private function setDeleteOptions($channel, $data)
+    {
+        curl_setopt($channel, CURLOPT_CUSTOMREQUEST, 'DELETE');
+        $this->setPostFields($channel, $data);
+
+        return $this;
+    }
+
+    /**
+     * @param $channel
+     * @param $data
+     */
+    private function setPostFields($channel, $data)
+    {
+        curl_setopt($channel, CURLOPT_POSTFIELDS, $data);
     }
 }

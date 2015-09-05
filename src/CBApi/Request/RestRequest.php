@@ -1,16 +1,18 @@
 <?php
 
-namespace CBApi\Request\Rest;
+namespace CBApi\Request;
 
 use CBApi\Connection\RestConnection;
 use CBApi\Sensors\Sensors;
 use InvalidArgumentException;
 use CBApi\Sensors\Exception\InvalidSensorException;
+use CBApi\Connection\Exception\ConnectionErrorException;
+use CBApi\Request\QueryException;
 
 /**
  * Class RestRequest
  *
- * @package CBApi\Request\Rest
+ * @package CBApi\Request
  */
 class RestRequest
 {
@@ -31,6 +33,49 @@ class RestRequest
     public function __construct(RestConnection $restConnection)
     {
         $this->restConnection = $restConnection;
+    }
+
+    /**
+     * @param $action
+     * @return mixed
+     * @throws ConnectionErrorException
+     */
+    protected function getRequest($action)
+    {
+        return $this->restConnection->getRequest($action);
+    }
+
+    /**
+     * @param $action
+     * @param $data
+     * @return mixed
+     * @throws ConnectionErrorException
+     */
+    protected function deleteRequest($action, $data)
+    {
+        return $this->restConnection->deleteRequest($action, $data);
+    }
+
+    /**
+     * @param $action
+     * @param $data
+     * @return mixed
+     * @throws ConnectionErrorException
+     */
+    protected function putRequest($action, $data)
+    {
+        return $this->restConnection->putRequest($action, $data);
+    }
+
+    /**
+     * @param $action
+     * @param $data
+     * @return mixed
+     * @throws ConnectionErrorException
+     */
+    protected function postRequest($action, $data)
+    {
+        return $this->restConnection->postRequest($action, $data);
     }
 
     /**
@@ -72,27 +117,27 @@ class RestRequest
     /**
      * @param $params
      * @return $this
-     * @throws InvalidArgumentException
+     * @throws QueryException
      */
-    public function verifyWatchlistParameters($params)
+    protected function verifyWatchlistParameters($params)
     {
         if (count(array_intersect_key($params, array_flip(self::$requiredWatchlistParameters))) < count(
                 self::$requiredWatchlistParameters
             )
         ) {
-            throw new InvalidArgumentException('Invalid watchlist parameters passed to query.');
+            throw new QueryException('Invalid watchlist parameters passed to query.');
         }
         // Ensure type is of events or modules
         if ($params['type'] !== 'events' && $params['type'] !== 'modules') {
-            throw new InvalidArgumentException('Type must be one of events or modules');
+            throw new QueryException('Type must be one of events or modules');
         }
         // Ensure that searchQuery begins with q=
         if (substr($params['searchQuery'], 0, 2) !== 'q=') {
-            throw new InvalidArgumentException('searchQuery must begin with q=<query>');
+            throw new QueryException('searchQuery must begin with q=<query>');
         }
         // Ensure that cbUrlVer begins with cb.urlver=
         if (substr($params['cbUrlVer'], 0, 10) !== 'cb.urlver=') {
-            throw new InvalidArgumentException('cbUrlVer must begin with cb.urlver=<version>');
+            throw new QueryException('cbUrlVer must begin with cb.urlver=<version>');
         }
     }
 
@@ -100,9 +145,9 @@ class RestRequest
      * @param $cbUrlVer
      * @param $searchQuery
      * @return string
-     * @throws InvalidArgumentException
+     * @throws QueryException
      */
-    public function formatWatchlistSearchQuery($cbUrlVer, $searchQuery)
+    protected function formatWatchlistSearchQuery($cbUrlVer, $searchQuery)
     {
         if (substr($cbUrlVer, -1) !== '&') {
             $cbUrlVer .= '&';
@@ -112,7 +157,7 @@ class RestRequest
         array_map(
             function ($value) use ($searchQuery) {
                 if (false === strpos($value, '=')) {
-                    throw new \InvalidArgumentException(
+                    throw new QueryException(
                         sprintf('Invalid searchQuery arguments passed: %s', $searchQuery)
                     );
                 }

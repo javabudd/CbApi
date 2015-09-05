@@ -5,21 +5,13 @@
 $api = new \CBApi\Api('https://localhost', 'XXXXXXXXXXXXXXXXXXXXXXXXXX');
 
 /** Get */
-$api->get()->info();
 $api->get()->processSearch('process_name:svchost.exe -path:c:\\windows\\');
-$api->get()->sensorInstaller('WindowsEXE');
-$api->get()->processSummary(1, 1, 10);
 
 /** Put */
-$api->put()->license(XXXXXXXXXXXXXXXXXXXXX);
-$api->put()->platformServerConfig(
-    [
-        'username' => 'example',
-        'password' => 'example',
-        'server'   => 'localhost'
-    ]
-);
-$api->put()->addWatchList(
+$api->put()->modifyWatchlist(1, 'newWatchlist');
+
+/** Post */
+$api->post()->addWatchList(
     [
         'basicQueryValidation' => true,
         'type'                 => 'events',
@@ -29,4 +21,7 @@ $api->put()->addWatchList(
         'readOnly'             => false
     ]
 );
+
+/** Delete */
+$api->delete()->deleteWatchlist(1);
 ```

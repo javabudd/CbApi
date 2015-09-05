@@ -1,15 +1,15 @@
 <?php
 
-namespace CBApi\Request;
+namespace CBApi\Request\Get;
 
-use CBApi\Request\Rest\RestRequest;
+use CBApi\Request\RestRequest;
 use CBApi\Connection\Exception\ConnectionErrorException;
 use CBApi\Sensors\Exception\InvalidSensorException;
 
 /**
  * Class GetRequest
  *
- * @package CBApi\Request
+ * @package CBApi\Request\Get
  */
 class GetRequest extends RestRequest
 {
@@ -23,7 +23,7 @@ class GetRequest extends RestRequest
      */
     public function info()
     {
-        return $this->restConnection->getRequest('/api/info');
+        return $this->getRequest('/api/info');
     }
 
     /**
@@ -34,7 +34,7 @@ class GetRequest extends RestRequest
      */
     public function licenseStatus()
     {
-        return $this->restConnection->getRequest('/api/v1/license');
+        return $this->getRequest('/api/v1/license');
     }
 
     /**
@@ -48,34 +48,7 @@ class GetRequest extends RestRequest
      */
     public function platformServerConfig()
     {
-        return $this->restConnection->getRequest('/api/v1/settings/global/platformserver');
-    }
-
-    /**
-     * Search for processes.
-     * Arguments:
-     *     query - The Cb query string; this is the same string used in the "main search box" on the process search
-     *             page. "Contains text..." See Cb Query Syntax for a description of options.
-     *     start - Defaulted to 0.  Will retrieve records starting at this offset.
-     *     rows - Defaulted to 10. Will retrieve this many rows.
-     *     sort - Default to last_update desc.  Must include a field and a sort order;
-     *             results will be sorted by this param.
-     *     facet_enabled - Enable facets on the result set. Defaults to enable facets (True)
-     *
-     * @param string    $query
-     * @param int       $start
-     * @param int       $rows
-     * @param string    $sort
-     * @param bool|true $facet
-     * @return mixed
-     * @throws ConnectionErrorException
-     */
-    public function processSearch($query = '', $start = 0, $rows = 10, $sort = 'last_update desc', $facet = true)
-    {
-        return $this->restConnection->postRequest(
-            '/api/v1/process',
-            $this->getBaseSearchQuery($query, $start, $rows, $sort, $facet)
-        );
+        return $this->getRequest('/api/v1/settings/global/platformserver');
     }
 
     /**
@@ -91,7 +64,7 @@ class GetRequest extends RestRequest
      */
     public function processSummary($id, $segment = 0, $childrenCount = 15)
     {
-        return $this->restConnection->getRequest(
+        return $this->getRequest(
             sprintf('/api/v1/process/%s/%s?children=%d', $id, $segment, $childrenCount)
         );
     }
@@ -107,7 +80,7 @@ class GetRequest extends RestRequest
      */
     public function processEvents($id, $segment = 0)
     {
-        return $this->restConnection->getRequest(sprintf('/api/v1/process/%s/%s/event', $id, $segment));
+        return $this->getRequest(sprintf('/api/v1/process/%s/%s/event', $id, $segment));
     }
 
     /**
@@ -120,33 +93,7 @@ class GetRequest extends RestRequest
      */
     public function processReport($id, $segment = 0)
     {
-        return $this->restConnection->getRequest(sprintf('/api/v1/process/%s/%s/report', $id, $segment));
-    }
-
-    /**
-     * Refer to documentation for processSearch
-     *
-     * @see processSearch
-     *
-     * @param string    $query
-     * @param int       $start
-     * @param int       $rows
-     * @param string    $sort
-     * @param bool|true $facet
-     * @return mixed
-     * @throws ConnectionErrorException
-     */
-    public function binarySearch(
-        $query = '',
-        $start = 0,
-        $rows = 10,
-        $sort = 'server_added_timestamp desc',
-        $facet = true
-    ) {
-        return $this->restConnection->postRequest(
-            '/api/v1/binary',
-            $this->getBaseSearchQuery($query, $start, $rows, $sort, $facet)
-        );
+        return $this->getRequest(sprintf('/api/v1/process/%s/%s/report', $id, $segment));
     }
 
     /**
@@ -158,7 +105,7 @@ class GetRequest extends RestRequest
      */
     public function binarySummary($md5)
     {
-        return $this->restConnection->getRequest(sprintf('/api/v1/binary/%s/summary', $md5));
+        return $this->getRequest(sprintf('/api/v1/binary/%s/summary', $md5));
     }
 
     /**
@@ -170,7 +117,7 @@ class GetRequest extends RestRequest
      */
     public function binary($md5hash)
     {
-        return $this->restConnection->getRequest(sprintf('/api/v1/binary/%s', $md5hash));
+        return $this->getRequest(sprintf('/api/v1/binary/%s', $md5hash));
     }
 
     /**
@@ -192,7 +139,7 @@ class GetRequest extends RestRequest
             $action .= $key . '=' . $param . '&';
         }
 
-        return $this->restConnection->getRequest($action);
+        return $this->getRequest($action);
     }
 
     /**
@@ -209,7 +156,7 @@ class GetRequest extends RestRequest
      */
     public function sensorInstaller($name, $groupId = 1)
     {
-        return $this->restConnection->getRequest($this->getSensor($name, $groupId));
+        return $this->getRequest($this->getSensor($name, $groupId));
     }
 
     /**
@@ -220,7 +167,7 @@ class GetRequest extends RestRequest
      */
     public function sensorBacklog()
     {
-        return $this->restConnection->getRequest('/api/v1/sensor/statistics');
+        return $this->getRequest('/api/v1/sensor/statistics');
     }
 
     /**
@@ -232,6 +179,6 @@ class GetRequest extends RestRequest
      */
     public function watchlist($id = null)
     {
-        return $this->restConnection->getRequest("/api/v1/watchlist/{$id}");
+        return $this->getRequest("/api/v1/watchlist/{$id}");
     }
 }

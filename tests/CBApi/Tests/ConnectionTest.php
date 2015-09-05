@@ -3,7 +3,7 @@
 namespace CBApi\Tests;
 
 use CBApi\Connection\Exception\ConnectionErrorException;
-use CBApi\Request\GetRequest;
+use CBApi\Request\Get\GetRequest;
 use CBApi\Connection\RestConnection;
 
 /**

@@ -2,8 +2,10 @@
 
 namespace CBApi;
 
-use CBApi\Request\GetRequest;
-use CBApi\Request\PutRequest;
+use CBApi\Request\Get\GetRequest;
+use CBApi\Request\Post\PostRequest;
+use CBApi\Request\Put\PutRequest;
+use CBApi\Request\Delete\DeleteRequest;
 use CBApi\Connection\RestConnection;
 
 include __DIR__ . '/../../vendor/autoload.php';
@@ -20,6 +22,12 @@ class Api
 
     /** @var PutRequest */
     private $putRequest;
+
+    /** @var PostRequest */
+    protected $postRequest;
+
+    /** @var DeleteRequest */
+    protected $deleteRequest;
 
     /** @var RestConnection */
     private $restConnection;
@@ -62,6 +70,30 @@ class Api
         }
 
         return $this->putRequest;
+    }
+
+    /**
+     * @return PostRequest
+     */
+    public function post()
+    {
+        if (null === $this->postRequest) {
+            $this->postRequest = new PostRequest($this->getRestConnection());
+        }
+
+        return $this->postRequest;
+    }
+
+    /**
+     * @return DeleteRequest
+     */
+    public function delete()
+    {
+        if (null === $this->deleteRequest) {
+            $this->deleteRequest = new DeleteRequest($this->getRestConnection());
+        }
+
+        return $this->deleteRequest;
     }
 
     /**

@@ -31,7 +31,7 @@ class Sensors
      * @param $name
      * @param $groupId
      * @return mixed
-     * @throws \CBApi\Sensors\Exception\InvalidSensorException
+     * @throws InvalidSensorException
      */
     public static function getSensor($name, $groupId)
     {
