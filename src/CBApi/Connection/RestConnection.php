@@ -12,10 +12,10 @@ use CBApi\Connection\Exception\ConnectionErrorException;
 class RestConnection
 {
     /** @var string */
-    protected $url;
+    private $url;
 
     /** @var string */
-    protected $apiKey;
+    private $apiKey;
 
     /**
      * @param $url

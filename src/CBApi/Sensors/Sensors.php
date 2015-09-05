@@ -2,6 +2,8 @@
 
 namespace CBApi\Sensors;
 
+use CBApi\Sensors\Exception\InvalidSensorException;
+
 /**
  * Class Sensors
  *
@@ -26,16 +28,32 @@ class Sensors
     }
 
     /**
+     * @param $name
+     * @param $groupId
+     * @return mixed
+     * @throws \CBApi\Sensors\Exception\InvalidSensorException
+     */
+    public static function getSensor($name, $groupId)
+    {
+        $sensorsMapping = self::mapSensorsByGroupId($groupId);
+        if (!array_key_exists($name, $sensorsMapping)) {
+            throw new InvalidSensorException($name);
+        }
+
+        return $sensorsMapping[$name];
+    }
+
+    /**
      * @param $groupId
      * @return array
      */
-    public static function getSensorMapping($groupId)
+    private static function mapSensorsByGroupId($groupId)
     {
         return array_map(
             function ($url) use ($groupId) {
                 return str_replace('{group_id}', $groupId, $url);
             },
-            self::getSensors()
+            self::$sensors
         );
     }
 }

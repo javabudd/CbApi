@@ -5,7 +5,7 @@ namespace CBApi\Tests;
 use CBApi\Connection\RestConnection;
 use CBApi\Request\GetRequest;
 use CBApi\Request\PutRequest;
-use CBApi\Connection\Exception\ConnectionErrorException;
+use CBApi\Sensors\Sensors;
 
 /**
  * Class ApiTest
@@ -77,21 +77,11 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testGetRequestNotNull
+     * @throws \CBApi\Sensors\Exception\InvalidSensorException
      */
-    public function testBadGetConnection()
+    public function testSensorFound()
     {
-        self::setExpectedException(ConnectionErrorException::class);
-        self::assertEquals(false, $this->getGetRequest()->info());
-    }
-
-    /**
-     * @depends testPutRequestNotNull
-     */
-    public function testBadPutConnection()
-    {
-        self::setExpectedException(ConnectionErrorException::class);
-        self::assertEquals(false, $this->getPutRequest()->license(self::$generalData['license']));
+        self::assertTrue(is_string(Sensors::getSensor('WindowsEXE', 1)));
     }
 
     /**

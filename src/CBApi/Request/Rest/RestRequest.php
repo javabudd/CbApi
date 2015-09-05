@@ -49,11 +49,13 @@ class RestRequest
     }
 
     /**
+     * @param $name
      * @param $groupId
      * @return array
+     * @throws \CBApi\Sensors\Exception\InvalidSensorException
      */
-    protected function getSensorMapping($groupId)
+    protected function getSensor($name, $groupId)
     {
-        return Sensors::getSensorMapping($groupId);
+        return Sensors::getSensor($name, $groupId);
     }
 }

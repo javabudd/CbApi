@@ -12,13 +12,12 @@ use CBApi\Sensors\Sensors;
 class InvalidSensorException extends \Exception
 {
     /**
-     * @param string $type
+     * @param string $name
      */
-    public function __construct($type)
+    public function __construct($name)
     {
-        $sensors = implode(', ', array_keys(Sensors::getSensors()));
         parent::__construct(
-            sprintf("Invalid sensor %s, should be one of {$sensors}", $type)
+            sprintf('Invalid sensor %s, should be one of %s', $name, implode(', ', array_keys(Sensors::getSensors())))
         );
     }
 }

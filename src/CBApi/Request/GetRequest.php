@@ -199,21 +199,16 @@ class GetRequest extends RestRequest
      * Get sensor installer package for a specified sensor group
      * Arguments:
      *     group_id - the group_id to download an installer for; defaults to 1 "Default Group"
-     *     type - the sensor installer type. [WindowsEXE|WindowsMSI|OSX|Linux]
+     *     name - the sensor installer type. [WindowsEXE|WindowsMSI|OSX|Linux]
      *
-     * @param     $type
+     * @param     $name
      * @param int $groupId
      * @return mixed
      * @throws InvalidSensorException
      * @throws ConnectionErrorException
      */
-    public function sensorInstaller($type, $groupId = 1)
+    public function sensorInstaller($name, $groupId = 1)
     {
-        $mapping = $this->getSensorMapping($groupId);
-        if (!array_key_exists($type, $mapping)) {
-            throw new InvalidSensorException($type);
-        }
-
-        return $this->restConnection->getRequest($mapping[$type]);
+        return $this->restConnection->getRequest($this->getSensor($name, $groupId));
     }
 }
