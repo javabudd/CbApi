@@ -47,39 +47,27 @@ class ApiTest extends \PHPUnit_Framework_TestCase
      * @param $apiUrl
      * @param $apiKey
      */
-    public function testApi($apiUrl, $apiKey)
+    public function testApiWithDifferentParameters($apiUrl, $apiKey)
     {
         $api = new Api($apiUrl, $apiKey);
         self::assertNotNull($api);
     }
 
-    /**
-     * @depends testApi
-     */
     public function testApiDelete()
     {
         self::assertNotNull($this->api->delete());
     }
 
-    /**
-     * @depends testApi
-     */
     public function testApiGet()
     {
         self::assertNotNull($this->api->get());
     }
 
-    /**
-     * @depends testApi
-     */
     public function testApiPut()
     {
         self::assertNotNull($this->api->put());
     }
 
-    /**
-     * @depends testApi
-     */
     public function testApiPost()
     {
         self::assertNotNull($this->api->post());
