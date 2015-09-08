@@ -1,14 +1,14 @@
 <?php
 
-namespace CBApi\Rest\V1\Formatter;
+namespace CBApi\Formatter;
 
-use CBApi\Rest\V1\Request\QueryException;
+use CBApi\Query\Exception\QueryException;
 use InvalidArgumentException;
 
 /**
  * Class WatchlistSearchQueryFormatter
  *
- * @package CBApi\Rest\V1\Formatter
+ * @package CBApi\Formatter
  */
 class WatchlistSearchQueryFormatter implements FormatterInterface
 {

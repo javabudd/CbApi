@@ -2,7 +2,11 @@
 
 namespace CBApi\Connection;
 
+use CBApi\Connection\Exception\CAInfoException;
+use CBApi\Connection\Exception\CAPathException;
 use CBApi\Connection\Exception\ConnectionErrorException;
+use CBApi\Connection\Exception\SSLVersionException;
+use CBApi\Validator\SSLOptionValidator;
 
 /**
  * Class RestConnection
@@ -17,27 +21,38 @@ class RestConnection
     /** @var string */
     private $apiKey;
 
+    /** @var array */
+    private $sslOptions;
+
+    /** @var resource */
+    private $channel;
+
     /**
      * @param $url
      * @param $apiKey
+     * @param $sslOptions
      */
-    public function __construct($url, $apiKey)
+    public function __construct($url, $apiKey, $sslOptions)
     {
-        $this->url    = $url;
-        $this->apiKey = $apiKey;
+        $this->url        = $url;
+        $this->apiKey     = $apiKey;
+        $this->sslOptions = $sslOptions;
     }
 
     /**
      * @param $action
      * @return mixed
      * @throws ConnectionErrorException
+     * @throws CAInfoException
+     * @throws CAPathException
+     * @throws SSLVersionException
      */
     public function getRequest($action)
     {
-        $channel = $this->getChannel($action);
-        $this->setBaseOptions($channel);
+        $this->setChannel($action);
+        $this->setBaseOptions();
 
-        return $this->curlExec($channel);
+        return $this->curlExec();
     }
 
     /**
@@ -45,13 +60,16 @@ class RestConnection
      * @param array $data
      * @return mixed
      * @throws ConnectionErrorException
+     * @throws CAInfoException
+     * @throws CAPathException
+     * @throws SSLVersionException
      */
     public function putRequest($action, array $data)
     {
-        $channel = $this->getChannel($action);
-        $this->setBaseOptions($channel)->setPutOptions($channel, json_encode($data));
+        $this->setChannel($action);
+        $this->setBaseOptions()->setPutOptions(json_encode($data));
 
-        return $this->curlExec($channel);
+        return $this->curlExec();
     }
 
     /**
@@ -59,13 +77,16 @@ class RestConnection
      * @param array $data
      * @return mixed
      * @throws ConnectionErrorException
+     * @throws CAInfoException
+     * @throws CAPathException
+     * @throws SSLVersionException
      */
     public function postRequest($action, array $data)
     {
-        $channel = $this->getChannel($action);
-        $this->setBaseOptions($channel)->setPostOptions($channel, json_encode($data));
+        $this->setChannel($action);
+        $this->setBaseOptions()->setPostOptions(json_encode($data));
 
-        return $this->curlExec($channel);
+        return $this->curlExec();
     }
 
     /**
@@ -73,103 +94,145 @@ class RestConnection
      * @param array $data
      * @return mixed
      * @throws ConnectionErrorException
+     * @throws CAInfoException
+     * @throws CAPathException
+     * @throws SSLVersionException
      */
     public function deleteRequest($action, array $data)
     {
-        $channel = $this->getChannel($action);
-        $this->setBaseOptions($channel)->setDeleteOptions($channel, json_encode($data));
+        $this->setChannel($action);
+        $this->setBaseOptions()->setDeleteOptions(json_encode($data));
 
-        return $this->curlExec($channel);
+        return $this->curlExec();
     }
 
     /**
      * @param $action
-     * @return resource
+     * @return $this
      */
-    private function getChannel($action)
+    private function setChannel($action)
     {
-        return curl_init($this->url . $action);
+        $this->channel = curl_init($this->url . $action);
+
+        return $this;
     }
 
     /**
-     * @param $channel
      * @return mixed
      * @throws ConnectionErrorException
      */
-    private function curlExec($channel)
+    private function curlExec()
     {
-        $response = curl_exec($channel);
+        $response = curl_exec($this->channel);
         if (!$response) {
-            throw new ConnectionErrorException(curl_errno($channel), curl_error($channel));
+            throw new ConnectionErrorException(curl_errno($this->channel), curl_error($this->channel));
         }
-        curl_close($channel);
+        curl_close($this->channel);
 
         return $response;
     }
 
     /**
-     * @param $channel
      * @return $this
+     * @throws CAInfoException
+     * @throws CAPathException
+     * @throws SSLVersionException
      */
-    private function setBaseOptions($channel)
+    private function setBaseOptions()
     {
         curl_setopt(
-            $channel,
+            $this->channel,
             CURLOPT_HTTPHEADER,
             array('Content-Type: application/json', 'Accept: application/json', 'X-Auth-Token: ' . $this->apiKey)
         );
-        curl_setopt($channel, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($channel, CURLOPT_SSL_VERIFYHOST, false);
-        curl_setopt($channel, CURLOPT_SSL_VERIFYPEER, false);
+
+        curl_setopt($this->channel, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($this->channel, CURLOPT_CONNECTTIMEOUT ,15);
+        curl_setopt($this->channel, CURLOPT_TIMEOUT, 60);
+        $this->setSSLOptions();
 
         return $this;
     }
 
     /**
-     * @param $channel
      * @param $data
      * @return $this
      */
-    private function setPutOptions($channel, $data)
+    private function setPutOptions($data)
     {
-        curl_setopt($channel, CURLOPT_CUSTOMREQUEST, 'PUT');
-        $this->setPostFields($channel, $data);
+        curl_setopt($this->channel, CURLOPT_CUSTOMREQUEST, 'PUT');
+        $this->setPostFields($data);
 
         return $this;
     }
 
     /**
-     * @param $channel
      * @param $data
      * @return $this
      */
-    private function setPostOptions($channel, $data)
+    private function setPostOptions($data)
     {
-        curl_setopt($channel, CURLOPT_POST, true);
-        $this->setPostFields($channel, $data);
+        curl_setopt($this->channel, CURLOPT_POST, true);
+        $this->setPostFields($data);
 
         return $this;
     }
 
     /**
-     * @param $channel
      * @param $data
      * @return $this
      */
-    private function setDeleteOptions($channel, $data)
+    private function setDeleteOptions($data)
     {
-        curl_setopt($channel, CURLOPT_CUSTOMREQUEST, 'DELETE');
-        $this->setPostFields($channel, $data);
+        curl_setopt($this->channel, CURLOPT_CUSTOMREQUEST, 'DELETE');
+        $this->setPostFields($data);
 
         return $this;
     }
 
     /**
-     * @param $channel
      * @param $data
      */
-    private function setPostFields($channel, $data)
+    private function setPostFields($data)
     {
-        curl_setopt($channel, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($this->channel, CURLOPT_POSTFIELDS, $data);
+    }
+
+    /**
+     * @throws CAInfoException
+     * @throws CAPathException
+     * @throws SSLVersionException
+     */
+    private function setSSLOptions()
+    {
+        $verifyPeer = false;
+        if (count($this->sslOptions) > 0) {
+            $sslOptionValidator = new SSLOptionValidator();
+            $sslOptionValidator->validate($this->sslOptions);
+            if (array_key_exists('caInfo', $this->sslOptions) && array_key_exists('caPath', $this->sslOptions)) {
+                if (file_exists($this->sslOptions['caInfo'])) {
+                    if (is_dir($this->sslOptions['caPath'])) {
+                        $verifyPeer = true;
+                        curl_setopt($this->channel, CURLOPT_CAINFO, $this->sslOptions['caInfo']);
+                        curl_setopt($this->channel, CURLOPT_CAPATH, $this->sslOptions['caPath']);
+                    } else{
+                        throw new CAPathException(
+                            sprintf('CA path %s does not exist.', $this->sslOptions['caPath'])
+                        );
+                    }
+                } else {
+                    throw new CAInfoException(
+                        sprintf('CA certificate %s does not exist.', $this->sslOptions['caInfo'])
+                    );
+                }
+            }
+            curl_setopt(
+                $this->channel,
+                CURLOPT_SSLVERSION,
+                array_key_exists('sslVersion', $this->sslOptions) ? $this->sslOptions['sslVersion'] : 0
+            );
+        }
+        curl_setopt($this->channel, CURLOPT_SSL_VERIFYHOST, 2);
+        curl_setopt($this->channel, CURLOPT_SSL_VERIFYPEER, $verifyPeer);
     }
 }

@@ -2,5 +2,5 @@ CBApi Tests
 ===========
 
 ```
-./vendor/bin/phpunit
+vendor/bin/phpunit
 ```

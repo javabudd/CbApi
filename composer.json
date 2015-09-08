@@ -1,4 +1,7 @@
 {
+  "name": "javabudd/cb-api",
+  "description": "A CarbonBlack API library written in PHP",
+  "version": "1.0.0",
   "authors": [
     {
       "name": "Andy O'Brien",
@@ -8,7 +11,8 @@
     }
   ],
   "require-dev": {
-    "phpunit/phpunit": "4.8.*"
+    "phpunit/phpunit": "4.8.*",
+    "ext-pthreads": ">=2.0.0"
   },
   "autoload": {
     "psr-4": {
@@ -17,7 +21,8 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "CBApi\\Tests\\": "tests/CBApi/Tests"
+      "CBApi\\Tests\\": "tests/CBApi/Tests",
+      "CBApi\\Server\\": "tests/CBApi/Server"
     }
   }
 }

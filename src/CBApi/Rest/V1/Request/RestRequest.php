@@ -6,6 +6,9 @@ use CBApi\Connection\RestConnection;
 use CBApi\Sensors\Sensors;
 use CBApi\Sensors\Exception\InvalidSensorException;
 use CBApi\Connection\Exception\ConnectionErrorException;
+use CBApi\Connection\Exception\CAInfoException;
+use CBApi\Connection\Exception\CAPathException;
+use CBApi\Connection\Exception\SSLVersionException;
 
 /**
  * Class RestRequest
@@ -29,6 +32,9 @@ class RestRequest
      * @param $action
      * @return mixed
      * @throws ConnectionErrorException
+     * @throws CAInfoException
+     * @throws CAPathException
+     * @throws SSLVersionException
      */
     protected function getRequest($action)
     {
@@ -40,6 +46,9 @@ class RestRequest
      * @param $data
      * @return mixed
      * @throws ConnectionErrorException
+     * @throws CAInfoException
+     * @throws CAPathException
+     * @throws SSLVersionException
      */
     protected function deleteRequest($action, $data)
     {
@@ -51,6 +60,9 @@ class RestRequest
      * @param $data
      * @return mixed
      * @throws ConnectionErrorException
+     * @throws CAInfoException
+     * @throws CAPathException
+     * @throws SSLVersionException
      */
     protected function putRequest($action, $data)
     {
@@ -62,6 +74,9 @@ class RestRequest
      * @param $data
      * @return mixed
      * @throws ConnectionErrorException
+     * @throws CAInfoException
+     * @throws CAPathException
+     * @throws SSLVersionException
      */
     protected function postRequest($action, $data)
     {

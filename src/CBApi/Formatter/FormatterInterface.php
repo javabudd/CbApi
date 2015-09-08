@@ -1,11 +1,11 @@
 <?php
 
-namespace CBApi\Rest\V1\Formatter;
+namespace CBApi\Formatter;
 
 /**
  * Interface FormatterInterface
  *
- * @package CBApi\Rest\V1\Formatter
+ * @package CBApi\Formatter
  */
 interface FormatterInterface
 {

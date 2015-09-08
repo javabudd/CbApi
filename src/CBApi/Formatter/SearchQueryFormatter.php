@@ -1,13 +1,13 @@
 <?php
 
-namespace CBApi\Rest\V1\Formatter;
+namespace CBApi\Formatter;
 
 use InvalidArgumentException;
 
 /**
  * Class SearchQueryFormatter
  *
- * @package CBApi\Rest\V1\Formatter
+ * @package CBApi\Formatter
  */
 class SearchQueryFormatter implements FormatterInterface
 {
