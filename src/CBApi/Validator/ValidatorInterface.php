@@ -1,11 +1,11 @@
 <?php
 
-namespace CBApi\Rest\V1\Validator;
+namespace CBApi\Validator;
 
 /**
  * Interface ValidatorInterface
  *
- * @package CBApi\Rest\V1\Validator
+ * @package CBApi\Validator
  */
 interface ValidatorInterface
 {

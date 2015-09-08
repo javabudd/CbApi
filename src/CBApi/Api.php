@@ -24,10 +24,10 @@ class Api
     private $putRequest;
 
     /** @var PostRequest */
-    protected $postRequest;
+    private $postRequest;
 
     /** @var DeleteRequest */
-    protected $deleteRequest;
+    private $deleteRequest;
 
     /** @var RestConnection */
     private $restConnection;
@@ -39,13 +39,25 @@ class Api
     private $apiKey;
 
     /**
-     * @param $apiUrl
-     * @param $apiKey
+     * Array of SSL options
+     *  - sslVersion
+     *  - caInfo (requires caPath) - CA certificate file
+     *  - caPath (requires caInfo) - Path to local CA directory
+     *
+     * @var array
      */
-    public function __construct($apiUrl, $apiKey)
+    private $sslOptions;
+
+    /**
+     * @param       $apiUrl
+     * @param       $apiKey
+     * @param array $sslOptions
+     */
+    public function __construct($apiUrl, $apiKey, array $sslOptions = array())
     {
-        $this->apiUrl = $apiUrl;
-        $this->apiKey = $apiKey;
+        $this->apiUrl     = $apiUrl;
+        $this->apiKey     = $apiKey;
+        $this->sslOptions = $sslOptions;
     }
 
     /**
@@ -102,7 +114,7 @@ class Api
     private function getRestConnection()
     {
         if (null === $this->restConnection) {
-            $this->restConnection = new RestConnection($this->apiUrl, $this->apiKey);
+            $this->restConnection = new RestConnection($this->apiUrl, $this->apiKey, $this->sslOptions);
         }
 
         return $this->restConnection;

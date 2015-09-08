@@ -4,11 +4,14 @@ namespace CBApi\Rest\V1\Request\Post;
 
 use CBApi\Rest\V1\Request\RestRequest;
 use CBApi\Connection\Exception\ConnectionErrorException;
-use CBApi\Rest\V1\Request\QueryException;
-use CBApi\Rest\V1\Formatter\SearchQueryFormatter;
+use CBApi\Connection\Exception\CAInfoException;
+use CBApi\Query\Exception\QueryException;
+use CBApi\Connection\Exception\CAPathException;
+use CBApi\Connection\Exception\SSLVersionException;
+use CBApi\Formatter\SearchQueryFormatter;
 use InvalidArgumentException;
-use CBApi\Rest\V1\Formatter\WatchlistSearchQueryFormatter;
-use CBApi\Rest\V1\Validator\WatchlistParameterValidator;
+use CBApi\Formatter\WatchlistSearchQueryFormatter;
+use CBApi\Validator\WatchlistParameterValidator;
 
 /**
  * Class PostRequest
@@ -23,6 +26,9 @@ class PostRequest extends RestRequest
      * @param $license
      * @return mixed
      * @throws ConnectionErrorException
+     * @throws CAInfoException
+     * @throws CAPathException
+     * @throws SSLVersionException
      */
     public function applyLicense($license)
     {
@@ -41,6 +47,9 @@ class PostRequest extends RestRequest
      * @param $config
      * @return mixed
      * @throws ConnectionErrorException
+     * @throws CAInfoException
+     * @throws CAPathException
+     * @throws SSLVersionException
      */
     public function setPlatformServerConfig($config)
     {
@@ -66,6 +75,9 @@ class PostRequest extends RestRequest
      * @return mixed
      * @throws ConnectionErrorException
      * @throws InvalidArgumentException
+     * @throws CAInfoException
+     * @throws CAPathException
+     * @throws SSLVersionException
      */
     public function processSearch($query = '', $start = 0, $rows = 10, $sort = 'last_update desc', $facet = true)
     {
@@ -97,6 +109,9 @@ class PostRequest extends RestRequest
      * @return mixed
      * @throws ConnectionErrorException
      * @throws InvalidArgumentException
+     * @throws CAInfoException
+     * @throws CAPathException
+     * @throws SSLVersionException
      */
     public function binarySearch(
         $query = '',
@@ -139,6 +154,9 @@ class PostRequest extends RestRequest
      * @throws QueryException
      * @throws ConnectionErrorException
      * @throws InvalidArgumentException
+     * @throws CAInfoException
+     * @throws CAPathException
+     * @throws SSLVersionException
      */
     public function addWatchList(array $params)
     {

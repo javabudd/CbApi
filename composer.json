@@ -8,7 +8,8 @@
     }
   ],
   "require-dev": {
-    "phpunit/phpunit": "4.8.*"
+    "phpunit/phpunit": "4.8.*",
+    "ext-pthreads": ">=2.0.0"
   },
   "autoload": {
     "psr-4": {
@@ -17,7 +18,8 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "CBApi\\Tests\\": "tests/CBApi/Tests"
+      "CBApi\\Tests\\": "tests/CBApi/Tests",
+      "CBApi\\Server\\": "tests/CBApi/Server"
     }
   }
 }

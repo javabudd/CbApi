@@ -4,6 +4,9 @@ namespace CBApi\Rest\V1\Request\Put;
 
 use CBApi\Rest\V1\Request\RestRequest;
 use CBApi\Connection\Exception\ConnectionErrorException;
+use CBApi\Connection\Exception\CAInfoException;
+use CBApi\Connection\Exception\CAPathException;
+use CBApi\Connection\Exception\SSLVersionException;
 
 /**
  * Class PutRequest
@@ -17,6 +20,9 @@ class PutRequest extends RestRequest
      * @param $watchlist
      * @return mixed
      * @throws ConnectionErrorException
+     * @throws CAInfoException
+     * @throws CAPathException
+     * @throws SSLVersionException
      */
     public function modifyWatchlist($id, $watchlist)
     {

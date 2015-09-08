@@ -1,13 +1,13 @@
 <?php
 
-namespace CBApi\Rest\V1\Validator;
+namespace CBApi\Validator;
 
-use CBApi\Rest\V1\Request\QueryException;
+use CBApi\Query\Exception\QueryException;
 
 /**
  * Class WatchlistParameterValidator
  *
- * @package CBApi\Rest\V1\Validator
+ * @package CBApi\Validator
  */
 class WatchlistParameterValidator implements ValidatorInterface
 {

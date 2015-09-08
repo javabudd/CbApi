@@ -5,6 +5,9 @@ namespace CBApi\Rest\V1\Request\Get;
 use CBApi\Rest\V1\Request\RestRequest;
 use CBApi\Connection\Exception\ConnectionErrorException;
 use CBApi\Sensors\Exception\InvalidSensorException;
+use CBApi\Connection\Exception\CAInfoException;
+use CBApi\Connection\Exception\CAPathException;
+use CBApi\Connection\Exception\SSLVersionException;
 
 /**
  * Class GetRequest
@@ -20,6 +23,9 @@ class GetRequest extends RestRequest
      *
      * @return string
      * @throws ConnectionErrorException
+     * @throws CAInfoException
+     * @throws CAPathException
+     * @throws SSLVersionException
      */
     public function info()
     {
@@ -31,6 +37,9 @@ class GetRequest extends RestRequest
      *
      * @return string
      * @throws ConnectionErrorException
+     * @throws CAInfoException
+     * @throws CAPathException
+     * @throws SSLVersionException
      */
     public function licenseStatus()
     {
@@ -45,6 +54,9 @@ class GetRequest extends RestRequest
      *
      * @return string
      * @throws ConnectionErrorException
+     * @throws CAInfoException
+     * @throws CAPathException
+     * @throws SSLVersionException
      */
     public function platformServerConfig()
     {
@@ -61,6 +73,9 @@ class GetRequest extends RestRequest
      * @param int $childrenCount
      * @return mixed
      * @throws ConnectionErrorException
+     * @throws CAInfoException
+     * @throws CAPathException
+     * @throws SSLVersionException
      */
     public function processSummary($id, $segment = 0, $childrenCount = 15)
     {
@@ -77,6 +92,9 @@ class GetRequest extends RestRequest
      * @param $segment
      * @return mixed
      * @throws ConnectionErrorException
+     * @throws CAInfoException
+     * @throws CAPathException
+     * @throws SSLVersionException
      */
     public function processEvents($id, $segment = 0)
     {
@@ -90,6 +108,9 @@ class GetRequest extends RestRequest
      * @param int $segment
      * @return mixed
      * @throws ConnectionErrorException
+     * @throws CAInfoException
+     * @throws CAPathException
+     * @throws SSLVersionException
      */
     public function processReport($id, $segment = 0)
     {
@@ -102,6 +123,9 @@ class GetRequest extends RestRequest
      * @param $md5
      * @return mixed
      * @throws ConnectionErrorException
+     * @throws CAInfoException
+     * @throws CAPathException
+     * @throws SSLVersionException
      */
     public function binarySummary($md5)
     {
@@ -114,6 +138,9 @@ class GetRequest extends RestRequest
      * @param $md5hash
      * @return mixed
      * @throws ConnectionErrorException
+     * @throws CAInfoException
+     * @throws CAPathException
+     * @throws SSLVersionException
      */
     public function binary($md5hash)
     {
@@ -130,6 +157,9 @@ class GetRequest extends RestRequest
      * @param array $queryParams
      * @return mixed
      * @throws ConnectionErrorException
+     * @throws CAInfoException
+     * @throws CAPathException
+     * @throws SSLVersionException
      */
     public function sensors(array $queryParams)
     {
@@ -153,6 +183,9 @@ class GetRequest extends RestRequest
      * @return mixed
      * @throws InvalidSensorException
      * @throws ConnectionErrorException
+     * @throws CAInfoException
+     * @throws CAPathException
+     * @throws SSLVersionException
      */
     public function sensorInstaller($name, $groupId = 1)
     {
@@ -164,6 +197,9 @@ class GetRequest extends RestRequest
      *
      * @return mixed
      * @throws ConnectionErrorException
+     * @throws CAInfoException
+     * @throws CAPathException
+     * @throws SSLVersionException
      */
     public function sensorBacklog()
     {
@@ -176,6 +212,9 @@ class GetRequest extends RestRequest
      * @param null|string $id
      * @return mixed
      * @throws ConnectionErrorException
+     * @throws CAInfoException
+     * @throws CAPathException
+     * @throws SSLVersionException
      */
     public function watchlist($id = null)
     {

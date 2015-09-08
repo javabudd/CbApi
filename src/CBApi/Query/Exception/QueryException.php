@@ -1,11 +1,11 @@
 <?php
 
-namespace CBApi\Rest\V1\Request;
+namespace CBApi\Query\Exception;
 
 /**
  * Class QueryException
  *
- * @package CBApi\Rest\V1\Request
+ * @package CBApi\Query\Exception
  */
 class QueryException extends \Exception
 {
