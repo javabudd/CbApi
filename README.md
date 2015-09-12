@@ -1,9 +1,15 @@
 ## CarbonBlack PHP API
 [![Build Status](https://travis-ci.org/javabudd/CbApi.svg?branch=master)](https://travis-ci.org/javabudd/CbApi)
 
-###Requires
+### Requires
 * PHP >= 5.5
 
+### Composer
+```
+composer require javabudd/cb-api
+```
+
+### Usage
 ```php
 $api = new \CBApi\Api('https://localhost', 'XXXXXXXXXXXXXXXXXXXXXXXXXX');
 
