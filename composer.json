@@ -1,4 +1,7 @@
 {
+  "name": "javabudd/CBApi",
+  "description": "A CarbonBlack API library written in PHP",
+  "version": "1.0.0",
   "authors": [
     {
       "name": "Andy O'Brien",
