@@ -8,8 +8,6 @@ use CBApi\Rest\V1\Request\Put\PutRequest;
 use CBApi\Rest\V1\Request\Delete\DeleteRequest;
 use CBApi\Connection\RestConnection;
 
-include __DIR__ . '/../../vendor/autoload.php';
-
 /**
  * Class Api
  *
